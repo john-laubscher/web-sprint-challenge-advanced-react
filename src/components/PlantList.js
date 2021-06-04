@@ -1,6 +1,21 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+const plantsInitialValue = [
+  {
+    description: "",
+    difficulty: "",
+    id: 0,
+    img: "",
+    light: "",
+    name: "",
+    price: 0,
+    scientificName: "",
+    sizes: [],
+    watering: 0,
+  },
+];
+
 export default class PlantList extends Component {
   // add state with a property called "plants" - initialize as an empty array
 
@@ -9,10 +24,21 @@ export default class PlantList extends Component {
   //   - set the returned plants array to this.state.plants
 
   /*********  DON'T CHANGE ANYTHING IN THE RENDER FUNCTION *********/
-  ////just sending a trivial commit
+  constructor() {
+    super();
+    this.state = {
+      plants: [],
+    };
+  }
+
   componentDidMount() {
     axios.get("http://localhost:3333/plants").then((res) => {
-      console.log(res);
+      console.log("axios call", res);
+      this.setState({
+        plants: [...res.data],
+      });
+      console.log("plantsArray", this.state);
+      debugger;
     });
   }
 
@@ -31,10 +57,7 @@ export default class PlantList extends Component {
                 <p>☀️ {plant.light}</p>
                 <p>💦 {plant.watering}x/month</p>
               </div>
-              <button
-                className="plant-button"
-                onClick={() => this.props.addToCart(plant)}
-              >
+              <button className="plant-button" onClick={() => this.props.addToCart(plant)}>
                 Add to cart
               </button>
             </div>
